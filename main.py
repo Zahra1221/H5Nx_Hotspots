@@ -82,8 +82,7 @@ from sklearn.metrics import roc_curve, auc
 
           # Build out the light-grey US polygon backdrop layer manually via GeoJSON
           layers = [{ "sourcetype": "raster",
-                  #    "source": [f"https://cartocdn.com{{z}}/{{x}}/{{y}}.png?key={carto_key}"],
-                      "source": ["https://basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png?key=cb1_2gv4_1_0e7ec49a69a71bd7b94819ae"],
+                      "source": [f"https://cartocdn.com{{z}}/{{x}}/{{y}}.png?key={carto_key}"],
                       "below": "traces"
                   }]
       ),
