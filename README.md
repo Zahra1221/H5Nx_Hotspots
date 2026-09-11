@@ -1,85 +1,22 @@
 # Predicting H5Nx Hotspots in the USA Using Species Distribution Modeling
 
-This repository contains the code, data-processing workflows, and documentation used to develop and evaluate predictive models of H5Nx avian influenza risk in the United States (U.S.).
+In this repository code and data for building a prediction model for Avian Influenza in the USA is implemented. Three datasets are used for this purpose:
 
-The study integrates climatic, wildlife, and poultry-related information to characterize the spatial distribution of H5Nx outbreak risk and generate predictive risk maps across the contiguous United States.
+* **Avian influenza case counts:** This dataset which is available from [Empres-i](https://empres-i.apps.fao.org/general) includes geocoordinates of avian influenza cases of wild and domestic birds along with their observation date. This dataset has been collected from 2004-01-01 to 2024-12-31.
+* **Poultry locations in the USA as of 2024:** This dataset was collected from [US Department of Agriculture (USDA)](https://www.fsis.usda.gov/inspection/establishments/meat-poultry-and-egg-product-inspection-directory), and includes geocoordinates of poultry facilities in America, as of 2024.
+* **Climate and environmental factors:** This data is available from [WorldClim](https://www.worldclim.org/data/worldclim21.html). It includes 19 climate factors which were collected from 1970 to 2000. 
 
-## Overview
+After removing multicollinearity from the datasets, 10 factors were retained for predicting avian influenza hotspots in the USA using 2 species distribution modeling methods:
 
-The modeling framework combines two predictive modeling approaches:
+* Logistic Regressoin (LR)
+* Random Forest Classifier (RF)
 
-- **Logistic Regression (LR)**
-- **Random Forest (RF)**
+The H5Nx cases collected from Empres-i were treated as the presence data. However, the small volume of the case count dataset caused a hige inbalance between the presence and absence data. To metigate this, synthetic presence data was generated using two methods:
 
-To address class imbalance between locations with and without reported H5Nx infections, two data-augmentation approaches were investigated:
+* Stochastic Variational Inference (SVI)
+* Empirical Distribution (ED)
 
-- **Stochastic Variational Inference (SVI)**
-- **Empirical Distribution (ED)**
-
-The combination of the two predictive models and two data-augmentation approaches resulted in four model configurations:
-
-1. **LR + SVI**
-2. **LR + ED**
-3. **RF + SVI**
-4. **RF + ED**
-
-The models were used to estimate spatial H5Nx risk and generate predictive risk maps for the United States.
-
----
-
-## Data
-
-Three primary data sources were used in the analysis.
-
-### 1. Avian Influenza Occurrence Data
-
-Avian influenza occurrence data were obtained from the **Food and Agriculture Organization of the United Nations (FAO) EMPRES-i** platform:
-
-https://empres-i.apps.fao.org/general
-
-The dataset contains reported avian influenza occurrences in wild and domestic animals, including geographic coordinates and observation dates. The data used in this study cover the period from **January 1, 2004, through December 31, 2024**.
-
-H5Nx outbreak observations were used as the presence observations for model development.
-
----
-
-### 2. U.S. Poultry Facility Data
-
-Locations of poultry facilities in the United States were obtained from the **United States Department of Agriculture (USDA) Food Safety and Inspection Service (FSIS) Meat, Poultry and Egg Product Inspection Directory**:
-
-https://www.fsis.usda.gov/inspection/establishments/meat-poultry-and-egg-product-inspection-directory
-
-The dataset used in this study represents poultry facility locations available as of **2024**.
-
-Poultry-related spatial predictors were derived from these locations, including:
-
-- Distance to the nearest poultry facility
-- Number of nearby poultry facilities
-
----
-
-### 3. Climate Data
-
-Historical bioclimatic data were obtained from **WorldClim version 2.1**:
-
-https://www.worldclim.org/data/worldclim21.html
-
-The historical climate dataset represents the **1970–2000** baseline period and contains 19 bioclimatic variables.
-
-Following data preprocessing and assessment of multicollinearity, **10 predictors** were retained for model development:
-
-1. Mean Diurnal Range (BIO2)
-2. Annual Temperature Range (BIO7)
-3. Mean Temperature of Wettest Quarter (BIO8)
-4. Precipitation Seasonality (BIO15)
-5. Precipitation of Wettest Quarter (BIO16)
-6. Precipitation of Warmest Quarter (BIO18)
-7. Distance from the Nearest Poultry Facility
-8. Number of Nearby Poultry Facilities
-9. Distance from the Nearest Infected Wild Animal
-10. Number of Nearby Wild Animal Infections
-
----
+Therefore, 4 models are implemented and compared for predicting avian influenza hotspots: LR+SVI, LR+ED, RF+SVI, RF+ED. The code provided in this repository implements and evaluates these 4 predictive models.
 
 ## Data Augmentation
 
@@ -186,34 +123,6 @@ Geographic and temporal generalizability were instead assessed using spatially b
 
 ---
 
-## Repository Structure
-
-The repository is organized to separate data, preprocessing, modeling, validation, and visualization workflows.
-
-```text
-├── README.md
-├── requirements.txt
-├── data/
-│   ├── raw/
-│   ├── processed/
-│   └── derived/
-├── src/
-│   ├── data_processing/
-│   ├── augmentation/
-│   ├── models/
-│   ├── validation/
-│   └── visualization/
-├── notebooks/
-├── results/
-│   ├── tables/
-│   ├── figures/
-│   └── risk_maps/
-└── LICENSE
-```
-
-> **Note:** The folder structure above should be updated to match the actual organization of this repository.
-
----
 
 ## Software Requirements
 
@@ -234,16 +143,6 @@ matplotlib
 ```
 
 Additional packages may be required depending on the specific preprocessing, modeling, and visualization scripts.
-
-To install the required dependencies:
-
-```bash
-pip install -r requirements.txt
-```
-
-It is recommended to use a dedicated Python virtual environment or Conda environment.
-
----
 
 ## Reproducing the Analysis
 
