@@ -438,7 +438,7 @@ def max_ent_for_us_5_fold (new_zs=None, n_splits= 5):
 
 
 #---------------------------------------------------------------------
-print('MaxEnt (Logistic Regression):')
+print('MaxEnt (Logistic Regression) with SVI:')
 fold_acc, fold_auc, curves_auc = max_ent_for_us_5_fold (simulated_present_samples)
 
 mean_acc = np.mean(fold_acc)
@@ -483,7 +483,7 @@ def max_ent_for_us(new_zs=None):
     # merge bio_us_data with us poultry locations data
     bio_us_data_df_with_hn51_obs_and_poultry_obs = pd.merge(bio_us_data_df_with_hn51_obs, poultry_locations_df_locations_modified, on=['latitude', 'longitude'], how='outer')
 
-    #---------------- My Code ---------------
+    #-------------------------------
     # Create spatial blocks BEFORE removing latitude/longitude
     spatial_groups = create_spatial_blocks(bio_us_data_df_with_hn51_obs_and_poultry_obs, lat_col='latitude', lon_col='longitude', block_size=2.0)
 
@@ -546,6 +546,7 @@ def max_ent_for_us(new_zs=None):
     y_prob = model.predict_proba(X_test)[:, 1]
 
     # Permutation importance
+    print("Permutation Importance:")
     calculate_permutation_importance(model, X_train, X_test, y_train, y_test)
     model.densify()
 
