@@ -8,6 +8,11 @@ from sklearn.model_selection import GroupKFold
 import matplotlib.pyplot as plt
 from sklearn.metrics import roc_curve, auc
 from sklearn.linear_model import LogisticRegression
+import plotly.graph_objects as go
+from tqdm import tqdm
+from sklearn.metrics import roc_auc_score, roc_curve, auc
+from sklearn.inspection import permutation_importance
+
 from sklearn.metrics import (
     accuracy_score,
     precision_score,
@@ -166,6 +171,22 @@ us_poultry_df = us_poultry_df.rename(columns={'Latitude (generated)':'latitude',
 simulated_present_samples = pd.read_csv('./svi.csv')
 
 #---------------------------------------------------------------------
+def calculate_permutation_importance(model, X_train, X_test, y_train, y_test):
+    # Calculate permutation importance
+    perm_importance = permutation_importance(model, X_test, y_test)
+    print(perm_importance.importances_mean)
+
+def calculate_contribution_level(X_train, X_test, y_train, y_test, var, total_AUC, model):
+   X_train_dropped = X_train.drop(var, axis=1, inplace=False)
+   X_test_dropped = X_test.drop(var, axis=1, inplace=False)
+   model = copy.deepcopy(model)
+   model.fit(X_train_dropped, y_train)
+   y_pred= model.predict(X_test_dropped)
+   # Calculate AUC
+   AUC = roc_auc_score(y_test, y_pred)
+   print(f"AUC by dropping {var} = {AUC}")
+   return total_AUC - AUC
+    
 def show_data_on_map (data_df, **kwargs):
   # Ensure your probability column is sorted if you want high-values on top
   data_df = data_df.sort_values(by=kwargs['color'])
@@ -374,10 +395,8 @@ def max_ent_for_us_5_fold (new_zs=None, n_splits= 5):
         print(f"Fold {fold + 1} AUC: {auc:.4f}")
         fold_auc.append(auc)
         curves_auc.append({'y_test':y_test, 'y_prob':y_prob})
-    #----------------------------------------
+        #-------------------------------
 
-#----------------------------------------
-    # The reviewer asked for all of these:
         precision = precision_score(y_test, y_pred)
         recall = recall_score(y_test, y_pred)
         f1 = f1_score(y_test, y_pred)
@@ -411,8 +430,7 @@ def max_ent_for_us_5_fold (new_zs=None, n_splits= 5):
 
         print("\nConfusion Matrix:")
         print(f"TN = {tn}, FP = {fp}, FN = {fn}, TP = {tp}")
-#---------------------------------------------
-
+        #----------------------------
     return fold_acc, fold_auc, curves_auc
 
 
@@ -442,10 +460,112 @@ for item in curves_auc:
   fold_roc_data.append((fpr, tpr))
   fold_auc.append(fold_auc_value)
 
-roc_5_fold (fold_roc_data, fold_auc, model_name='Model B')
+roc_5_fold (fold_roc_data, fold_auc, model_name='LR with SVI - 5-Fold Spatial Cross-Validation')
 
+#----------------------------------------------
+def max_ent_for_us(new_zs=None):
+    # modify locations
+    h5n1_us_data_df_with_locations_modified = modify_locations(us_h5n1_cases_df, bio_us_data_df)
+    # h5n1_us_data_df = h5n1_us_data_df[h5n1_us_data_df['species'].str.contains('Wild', case=False, na=False)]
+    # only focus on domestic cases
+    wild_h5n1_us_data_df_with_locations_modified = h5n1_us_data_df_with_locations_modified[~h5n1_us_data_df_with_locations_modified['species'].str.contains('Wild', case=False, na=False)]
+    wild_h5n1_us_data_df_locations_only = wild_h5n1_us_data_df_with_locations_modified[['latitude', 'longitude']]
+    wild_h5n1_us_data_df_locations_only['observed'] = 1
+    # load us poultry data
+    poultry_locations_df = us_poultry_df[['latitude', 'longitude']]
+    poultry_locations_df_locations_modified = modify_locations(poultry_locations_df, bio_us_data_df)
+    poultry_locations_df_locations_modified['poultry_observed'] = 1
+    # merge bio_us_data with us h5n1 observed cases
+    bio_us_data_df_with_hn51_obs = pd.merge(bio_us_data_df, wild_h5n1_us_data_df_locations_only, on=['latitude', 'longitude'], how='outer')
+    # merge bio_us_data with us poultry locations data
+    bio_us_data_df_with_hn51_obs_and_poultry_obs = pd.merge(bio_us_data_df_with_hn51_obs, poultry_locations_df_locations_modified, on=['latitude', 'longitude'], how='outer')
 
+    #---------------- My Code ---------------
+    # Create spatial blocks BEFORE removing latitude/longitude
+    spatial_groups = create_spatial_blocks(bio_us_data_df_with_hn51_obs_and_poultry_obs, lat_col='latitude', lon_col='longitude', block_size=2.0)
 
+    #spatial_groups = spatial_groups['spatial_block'].reset_index(drop=True)
 
+    X = spatial_groups.copy()
+    y = spatial_groups['observed']
+
+    splitter = GroupShuffleSplit(n_splits=1, test_size=0.20, random_state=42)
+    train_idx, test_idx = next(splitter.split(X, y, groups=spatial_groups['spatial_block'].reset_index(drop=True)))
+
+    train = spatial_groups.copy()#.iloc[train_idx]
+    test_dummy = spatial_groups[spatial_groups.index.isin([test_idx])].copy()
+    train['observed'] = [0 if i in test_idx else train['observed'][i] for i in train.index]
+    
+    train = train.fillna(0)
+
+    # add distance_to_nearest_poultry column
+    add_distance_to_poultry_coln(train)
+    # add # nearby poultry facilities column
+    add_num_of_poultry_coln(train, 2)
+    # add distance to infected wild animals
+    add_distance_to_infected_wild_animals(train, h5n1_us_data_df_with_locations_modified)
+    # add # nearby infected wild animals
+    add_num_of_infected_wild_animals(train, h5n1_us_data_df_with_locations_modified, 2)
+    # drop poultry_observed column
+    train = train.drop(columns=['poultry_observed'])
+    # normalize data
+    z_normalized_bio_us_data_df = z_normalizing(train,
+                                                ['latitude', 'longitude', 'observed','lat_block','lon_block','spatial_block'],
+                                                ['latitude', 'longitude', 'observed','lat_block','lon_block','spatial_block'])
+
+    #z_normalized_bio_us_data_df = z_normalized_bio_us_data_df.sample(frac=1).reset_index(drop=True)
+    train = z_normalized_bio_us_data_df[z_normalized_bio_us_data_df.index.isin(train_idx)]
+    train = train.fillna(0)
+    test = z_normalized_bio_us_data_df[z_normalized_bio_us_data_df.index.isin(test_idx)]
+    test['observed'] = test_dummy['observed']
+
+    if new_zs is not None:
+        train = pd.concat([train, new_zs],ignore_index=True)
+        #z_normalized_bio_us_data_df.to_csv("./Layers/us_bio_and_poultry_and_observ_information_normalized.csv", index=False)
+
+    # fit the logistic regression model
+    train.fillna(0, inplace=True)
+    test.fillna(0, inplace=True)
+    X_train = train.drop(columns= ['latitude', 'longitude', 'observed','lat_block','lon_block','spatial_block'])
+    X_test = test.drop(columns= ['latitude', 'longitude', 'observed','lat_block','lon_block','spatial_block'])
+
+    y_train = train['observed']
+    y_test = test['observed']
+
+#----------------- MaxEnt ------------------
+    # Build logistic regression model
+    model = LogisticRegression()
+    model.fit(X_train, y_train)
+
+    # Predictions
+    y_pred = model.predict(X_test)
+    # IMPORTANT: probability, not hard class, for AUC
+    y_prob = model.predict_proba(X_test)[:, 1]
+
+    # Permutation importance
+    calculate_permutation_importance(model, X_train, X_test, y_train, y_test)
+    model.densify()
+
+    X = z_normalized_bio_us_data_df.copy()
+    if new_zs is not None:
+      X = pd.concat([X, new_zs],ignore_index=True)
+    # Predictions for ALL observations
+    y_prob_all = model.predict_proba(X.drop(columns= ['latitude', 'longitude', 'observed','lat_block','lon_block','spatial_block']))
+
+    z_normalized_bio_us_data_df_pred = deepcopy(X) #z_normalized_bio_us_data_df)
+    z_normalized_bio_us_data_df_pred['probability'] = list(y_prob_all[:, 1])
+    z_normalized_bio_us_data_df_pred_true = z_normalized_bio_us_data_df_pred[
+        (z_normalized_bio_us_data_df_pred['probability'] > 0.1) &
+        (z_normalized_bio_us_data_df_pred['latitude'] < 10000) &
+        (z_normalized_bio_us_data_df_pred['longitude'] < 10000)]
+
+    # show on the map
+    #z_normalized_bio_us_data_df_pred_true['type'] = [str(n) for n in z_normalized_bio_us_data_df_pred_true['probability']]
+    show_data_on_map(z_normalized_bio_us_data_df_pred_true, color='probability')
+
+#    return max_ent_model
+#----------------------------------------------
+max_ent_for_us(simulated_present_samples)
+#----------------------------------------------
 print('Random Forest:')
 
