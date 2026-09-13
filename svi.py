@@ -15,17 +15,6 @@ from pyro.optim import Adam
 from torch.distributions import MultivariateNormal, Normal
 from scipy.stats import multivariate_normal
 
-from sklearn.preprocessing import StandardScaler, MinMaxScaler
-# SVI FUNCTIONS
-import torch.nn.functional as F
-import pyro
-import pyro.distributions as dist
-from markdown.util import deprecated
-from pyro.infer import SVI, Trace_ELBO
-from pyro.optim import Adam
-# from scipy.stats import multivariate_normal
-from torch.distributions import MultivariateNormal, Normal
-
 
 # some helper functions
 def modify_locations(df_to_modify, bio_us_data_df):
