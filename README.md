@@ -82,4 +82,4 @@ To run the code, please follow the steps below:
 16. Run the "rf_temporal_block_ed.py" to see the results of temporal validation for RF with the data augmented with synthetic data created using ED.
 17. Run the "rf_random_split_ed.py" to see the results of random train-test split for RF with the data augmented with synthetic data created using ED.
 
-Note: If you get a [CARTO key](https://carto.com/basemaps/apikey/), you can add it to the "show_data_on_map" function to remove the watermark from the basemaps.
+Note: If you get a [CARTO key](https://carto.com/basemaps/apikey/), you can add it to the "show_data_on_map" function to authenticate the custom tile URL and remove the watermark from the basemaps.
