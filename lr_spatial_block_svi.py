@@ -566,6 +566,3 @@ def max_ent_for_us(new_zs=None):
 #    return max_ent_model
 #----------------------------------------------
 max_ent_for_us(simulated_present_samples)
-#----------------------------------------------
-print('Random Forest:')
-
