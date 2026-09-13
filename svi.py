@@ -13,6 +13,7 @@ from pyro.infer import SVI, Trace_ELBO
 from pyro.optim import Adam
 # from scipy.stats import multivariate_normal
 from torch.distributions import MultivariateNormal, Normal
+from scipy.stats import multivariate_normal
 
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
 # SVI FUNCTIONS
