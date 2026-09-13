@@ -190,7 +190,7 @@ def create_spatial_blocks(data_df, lat_col='latitude', lon_col='longitude', bloc
 
     return df
 
-  def roc_and_auc(y_true, y_pred, model_name):
+def roc_and_auc(y_true, y_pred, model_name):
   # Compute roc curve and auc value
   fpr, tpr, thresholds = roc_curve(y_true, y_pred)
   roc_auc = auc(fpr, tpr)
@@ -230,7 +230,7 @@ def calculate_contribution_level(X_train, X_test, y_train, y_test, var, total_AU
    print(f"AUC by dropping {var} = {AUC}")
    return total_AUC - AUC
 
-  def show_data_on_map (data_df, **kwargs):
+def show_data_on_map (data_df, **kwargs):
   # Ensure your probability column is sorted if you want high-values on top
   data_df = data_df.sort_values(by=kwargs['color'])
 
