@@ -76,4 +76,4 @@ To run the code, please follow the steps below:
 10. Run the "temporal_block_ed.py" to see the results of temporal validation for the data augmented with synthetic data created using ED.
 11. Run the "random_split_ed.py" to see the results of random train-test split for the data augmented with synthetic data created using ED.
 
-Note: If you get a CARTO key, you can add it to the "show_data_on_map" function to remove the watermark from the basemap.
+Note: If you get a [CARTO key](https://carto.com/basemaps/apikey/), you can add it to the "show_data_on_map" function to remove the watermark from the basemap.
