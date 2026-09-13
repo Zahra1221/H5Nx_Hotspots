@@ -341,6 +341,9 @@ def max_ent_for_us(new_zs=None, model_name='LR with SVI - Temporal Validation'):
     test['observed'] = test_dummy['observed']
     test = test.fillna(0)
 
+    if new_zs is not None:
+        train = pd.concat([train, new_zs],ignore_index=True)
+    
     X_train = train.drop(columns= ['latitude', 'longitude', 'observed','observation_date'])
     X_test = test.drop(columns= ['latitude', 'longitude', 'observed','observation_date'])
     y_train = train['observed']
@@ -413,6 +416,8 @@ def max_ent_for_us(new_zs=None, model_name='LR with SVI - Temporal Validation'):
     model.densify()
 
     X = z_normalized_bio_us_data_df.copy()
+    if new_zs is not None:
+        X = pd.concat([X, new_zs],ignore_index=True)
     y_prob_all = model.predict_proba(X.drop(columns= ['latitude', 'longitude', 'observed','observation_date']))
 
     z_normalized_bio_us_data_df_pred = deepcopy(X) #z_normalized_bio_us_data_df)
