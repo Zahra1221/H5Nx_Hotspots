@@ -547,7 +547,7 @@ new_zs_dict['longitude'] = [10000 for i in range(new_samples_to_generate_n)]
 simulated_present_samples = pd.DataFrame(new_zs_dict)
 
 
-simulated_present_samples.to_csv("./SIV.csv", index=False)
+simulated_present_samples.to_csv("./SVI.csv", index=False)
 
 
 #---------------------------------------------------------------------
