@@ -69,4 +69,7 @@ To run the code, please follow the steps below:
 3. Run the "tif2csv.py" file.
 4. Run the "bio_data.py" file to create the "bio_us_data_df.csv" file.
 5. Run the "svi.py" file to create the synthetic data, "SVI.csv," using SVI method.
-6. Run the "ed.py" file to create the synthetic data using ED method.
+6. Run the "spatial_block_svi.py" to see the results of spatial block 5-fold validation for the data augmented with synthetic data created using SVI.
+7. Run the "temporal_block_svi.py" to see the results of temporal validation for the data augmented with synthetic data created using SVI.
+8. Run the "spatial_block_ed.py" to see the results of spatial block 5-fold validation for the data augmented with synthetic data created using ED.
+9. Run the "temporal_block_ed.py" to see the results of temporal validation for the data augmented with synthetic data created using SVI.
