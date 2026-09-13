@@ -14,6 +14,7 @@ from sklearn.metrics import roc_auc_score, roc_curve, auc
 from sklearn.inspection import permutation_importance
 import plotly
 import plotly.express as px
+import plotly.io as pio
 
 from sklearn.metrics import (
     accuracy_score,
