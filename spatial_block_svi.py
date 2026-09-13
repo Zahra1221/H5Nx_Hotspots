@@ -8,6 +8,16 @@ from sklearn.model_selection import GroupKFold
 import matplotlib.pyplot as plt
 from sklearn.metrics import roc_curve, auc
 from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import (
+    accuracy_score,
+    precision_score,
+    recall_score,
+    f1_score,
+    confusion_matrix,
+    balanced_accuracy_score,
+    brier_score_loss,
+    log_loss
+)
 
 # some helper functions
 def modify_locations(df_to_modify, bio_us_data_df):
