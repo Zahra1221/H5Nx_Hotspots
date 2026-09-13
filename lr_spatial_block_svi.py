@@ -563,8 +563,6 @@ def max_ent_for_us(new_zs=None):
         (z_normalized_bio_us_data_df_pred['latitude'] < 10000) &
         (z_normalized_bio_us_data_df_pred['longitude'] < 10000)]
 
-    # show on the map
-    #z_normalized_bio_us_data_df_pred_true['type'] = [str(n) for n in z_normalized_bio_us_data_df_pred_true['probability']]
     show_data_on_map(z_normalized_bio_us_data_df_pred_true, color='probability')
 
 #    return max_ent_model
