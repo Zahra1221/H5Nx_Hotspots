@@ -4,7 +4,7 @@ In this repository code and data for building a prediction model for Avian Influ
 
 * **Avian influenza case counts:** This dataset which is available from [Empres-i](https://empres-i.apps.fao.org/general) includes geocoordinates of avian influenza cases of wild and domestic birds along with their observation date. This dataset has been collected from 2004-01-01 to 2024-12-31.
 * **Poultry locations in the USA as of 2024:** This dataset was collected from [US Department of Agriculture (USDA)](https://www.fsis.usda.gov/inspection/establishments/meat-poultry-and-egg-product-inspection-directory), and includes geocoordinates of poultry facilities in America, as of 2024.
-* **Climate and environmental factors:** This data is available from [WorldClim](https://www.worldclim.org/data/worldclim21.html). It includes 19 climate factors which were collected from 1970 to 2000. 
+* **Climate and environmental factors:** This data is available from [WorldClim](https://www.worldclim.org/data/worldclim21.html). It includes 19 climate factors which were collected from 1970 to 2000. These files are in .tif format and can be converted to .csv format using the "tif2csv.py" file in this repository.
 
 After removing multicollinearity from the datasets, 10 factors were retained for predicting avian influenza hotspots in the USA using 2 species distribution modeling methods:
 
@@ -54,6 +54,7 @@ pyro-ppl
 rasterio
 plotly
 matplotlib
+pathlib
 ```
 
 Additional packages may be required depending on the specific preprocessing, modeling, and visualization scripts.
