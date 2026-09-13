@@ -73,3 +73,5 @@ To run the code, please follow the steps below:
 7. Run the "temporal_block_svi.py" to see the results of temporal validation for the data augmented with synthetic data created using SVI.
 8. Run the "spatial_block_ed.py" to see the results of spatial block 5-fold validation for the data augmented with synthetic data created using ED.
 9. Run the "temporal_block_ed.py" to see the results of temporal validation for the data augmented with synthetic data created using ED.
+
+Note: If you get a CARTO key, you can add it to the "show_data_on_map" function to remove the watermark from the basemap.
