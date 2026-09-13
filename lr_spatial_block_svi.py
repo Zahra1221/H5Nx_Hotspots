@@ -15,6 +15,7 @@ from sklearn.inspection import permutation_importance
 import plotly
 import plotly.express as px
 import plotly.io as pio
+from scipy.stats import multivariate_normal
 
 from sklearn.metrics import (
     accuracy_score,
