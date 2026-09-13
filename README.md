@@ -70,16 +70,16 @@ To run the code, please follow the steps below:
 4. Run the "bio_data.py" file to create the "bio_us_data_df.csv" file.
 5. Run the "svi.py" file to create the synthetic data, "SVI.csv," using SVI method.
 6. Run the "lr_spatial_block_svi.py" to see the results of spatial block 5-fold validation for LR with the data augmented with synthetic data created using SVI.
-7. Run the "lr_temporal_block_svi.py" to see the results of temporal validation for LR with the data augmented with synthetic data created using SVI.
+7. Run the "lr_temporal_validation_svi.py" to see the results of temporal validation for LR with the data augmented with synthetic data created using SVI.
 8. Run the "lr_random_split_svi.py" to see the results of random train-test split for LR with the data augmented with synthetic data created using SVI.
 9. Run the "rf_spatial_block_svi.py" to see the results of spatial block 5-fold validation for RF with the data augmented with synthetic data created using SVI.
-10. Run the "rf_temporal_block_svi.py" to see the results of temporal validation for RF with the data augmented with synthetic data created using SVI.
+10. Run the "rf_temporal_validation_svi.py" to see the results of temporal validation for RF with the data augmented with synthetic data created using SVI.
 11. Run the "rf_random_split_svi.py" to see the results of random train-test split for RF with the data augmented with synthetic data created using SVI.
 12. Run the "lr_spatial_block_ed.py" to see the results of spatial block 5-fold validation for LR with the data augmented with synthetic data created using ED.
-13. Run the "lr_temporal_block_ed.py" to see the results of temporal validation for LR with the data augmented with synthetic data created using ED.
+13. Run the "lr_temporal_validation_ed.py" to see the results of temporal validation for LR with the data augmented with synthetic data created using ED.
 14. Run the "lr_random_split_ed.py" to see the results of random train-test split for LR with the data augmented with synthetic data created using ED.
 15. Run the "rf_spatial_block_ed.py" to see the results of spatial block 5-fold validation for RF with the data augmented with synthetic data created using ED.
-16. Run the "rf_temporal_block_ed.py" to see the results of temporal validation for RF with the data augmented with synthetic data created using ED.
+16. Run the "rf_temporal_validation_ed.py" to see the results of temporal validation for RF with the data augmented with synthetic data created using ED.
 17. Run the "rf_random_split_ed.py" to see the results of random train-test split for RF with the data augmented with synthetic data created using ED.
 
 Note: If you get a [CARTO key](https://carto.com/basemaps/apikey/), you can add it to the "show_data_on_map" function to authenticate the custom tile URL and remove the watermark from the basemaps.
