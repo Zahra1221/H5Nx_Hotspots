@@ -71,7 +71,9 @@ To run the code, please follow the steps below:
 5. Run the "svi.py" file to create the synthetic data, "SVI.csv," using SVI method.
 6. Run the "spatial_block_svi.py" to see the results of spatial block 5-fold validation for the data augmented with synthetic data created using SVI.
 7. Run the "temporal_block_svi.py" to see the results of temporal validation for the data augmented with synthetic data created using SVI.
-8. Run the "spatial_block_ed.py" to see the results of spatial block 5-fold validation for the data augmented with synthetic data created using ED.
-9. Run the "temporal_block_ed.py" to see the results of temporal validation for the data augmented with synthetic data created using ED.
+8. Run the "random_split_svi.py" to see the results of random train-test split for the data augmented with synthetic data created using SVI.
+9. Run the "spatial_block_ed.py" to see the results of spatial block 5-fold validation for the data augmented with synthetic data created using ED.
+10. Run the "temporal_block_ed.py" to see the results of temporal validation for the data augmented with synthetic data created using ED.
+11. Run the "random_split_ed.py" to see the results of random train-test split for the data augmented with synthetic data created using ED.
 
 Note: If you get a CARTO key, you can add it to the "show_data_on_map" function to remove the watermark from the basemap.
