@@ -60,3 +60,12 @@ pathlib
 Additional packages may be required depending on the specific preprocessing, modeling, and visualization scripts.
 
 ---
+
+### How to use
+
+To run the code, please follow the steps below:
+1. Download this repository.
+2. Download the "Bioclimatic variables" of [worldclim](https://www.worldclim.org/data/worldclim21.html), (10 minutes) and place them in a folder named "worldclim" beside the "main.py" or "tif2csv.py" file.
+3. Run the "tif2csv.py" file.
+4. Run the "siv.py" file to create the synthetic data using SIV method.
+5. Run the "ed.py" file to create the synthetic data using ED method.
