@@ -333,7 +333,7 @@ def max_ent_for_us_5_fold (new_zs=None, n_splits= 5):
     # modify locations
     h5n1_us_data_df_with_locations_modified = modify_locations(us_h5n1_cases_df, bio_us_data_df)
     # h5n1_us_data_df = h5n1_us_data_df[h5n1_us_data_df['species'].str.contains('Wild', case=False, na=False)]
-    # only focus on domestic cases
+    
     wild_h5n1_us_data_df_with_locations_modified = h5n1_us_data_df_with_locations_modified[~h5n1_us_data_df_with_locations_modified['species'].str.contains('Wild', case=False, na=False)]
     wild_h5n1_us_data_df_locations_only = wild_h5n1_us_data_df_with_locations_modified[['latitude', 'longitude']]
     wild_h5n1_us_data_df_locations_only['observed'] = 1
@@ -471,7 +471,7 @@ def max_ent_for_us(new_zs=None):
     # modify locations
     h5n1_us_data_df_with_locations_modified = modify_locations(us_h5n1_cases_df, bio_us_data_df)
     # h5n1_us_data_df = h5n1_us_data_df[h5n1_us_data_df['species'].str.contains('Wild', case=False, na=False)]
-    # only focus on domestic cases
+    
     wild_h5n1_us_data_df_with_locations_modified = h5n1_us_data_df_with_locations_modified[~h5n1_us_data_df_with_locations_modified['species'].str.contains('Wild', case=False, na=False)]
     wild_h5n1_us_data_df_locations_only = wild_h5n1_us_data_df_with_locations_modified[['latitude', 'longitude']]
     wild_h5n1_us_data_df_locations_only['observed'] = 1
