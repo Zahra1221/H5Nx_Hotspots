@@ -337,7 +337,7 @@ def random_forest(X, y):
 #---------------------------------------------
 
     # ROC curve
-    roc_and_auc(y_test, y_prob, 'No Augmentation')
+    roc_and_auc(y_test, y_prob, 'RF with SVI - Random Train-Test Split')
 
     # Permutation importance
     calculate_permutation_importance(model, X_train, X_test, y_train, y_test)
