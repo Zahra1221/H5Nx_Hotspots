@@ -281,7 +281,7 @@ def show_data_on_map (data_df, **kwargs):
   fig.show()
 
 #---------------------------------------------------------------
-def max_ent(X, y, model_name='Model B'):
+def max_ent(X, y, model_name='LR with SVI - Random Train-Test Split'):
     """
     we use a logistic regression model as an efficient replacement of maximum entropy model because we don't need to
     transform our feature x_1, .., x_19
