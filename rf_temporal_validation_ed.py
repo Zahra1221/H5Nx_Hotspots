@@ -191,7 +191,7 @@ def create_spatial_blocks(data_df, lat_col='latitude', lon_col='longitude', bloc
 
     return df
 
-  def roc_and_auc(y_true, y_pred, model_name):
+def roc_and_auc(y_true, y_pred, model_name):
   # Compute roc curve and auc value
   fpr, tpr, thresholds = roc_curve(y_true, y_pred)
   roc_auc = auc(fpr, tpr)
@@ -231,7 +231,7 @@ def calculate_contribution_level(X_train, X_test, y_train, y_test, var, total_AU
    print(f"AUC by dropping {var} = {AUC}")
    return total_AUC - AUC
 
-  def show_data_on_map (data_df, **kwargs):
+def show_data_on_map (data_df, **kwargs):
   # Ensure your probability column is sorted if you want high-values on top
   data_df = data_df.sort_values(by=kwargs['color'])
 
@@ -323,17 +323,17 @@ def get_random_forest(new_zs=None, model_name= 'RF with ED - Temporal Validation
     train = train.fillna(0)
     train['observed'] = [0 if idx in test_idx else train['observed'][idx] for idx in train.index]
 
-    #     # add distance_to_nearest_poultry column
+    # add distance_to_nearest_poultry column
     add_distance_to_poultry_coln(train)
-    #     # add # nearby poultry facilities column
+    # add # nearby poultry facilities column
     add_num_of_poultry_coln(train, 2)
-    #     # add distance to infected wild animals
+    # add distance to infected wild animals
     add_distance_to_infected_wild_animals(train, h5n1_us_data_df_with_locations_modified)
-    #     # add # nearby infected wild animals
+    # add # nearby infected wild animals
     add_num_of_infected_wild_animals(train, h5n1_us_data_df_with_locations_modified, 2)
-    #     # drop poultry_observed column
+    # drop poultry_observed column
     train = train.drop(columns=['poultry_observed'])
-    #     # normalize data
+    # normalize data
     z_normalized_bio_us_data_df = z_normalizing(train,
                                                 ['latitude', 'longitude', 'observed','observation_date'],
                                                 ['latitude', 'longitude', 'observed','observation_date'])
